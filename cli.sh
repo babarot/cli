@@ -132,8 +132,33 @@ extract() {
     fi
 }
 
+check_dependencies() {
+    local err
+    err=0
+
+    sleep 1
+
+    if ! has "wget"; then
+        err=1
+        die "wget: not found"
+    fi
+
+    if ! has "curl"; then
+        err=1
+        die "wget: not found"
+    fi
+
+    if [ "$err" -ne 0 ]; then
+        exit 1
+    fi
+}
+
 main() {
     log TITLE "== Bootstraping enhancd =="
+
+    # check dependencies
+    check_dependencies
+
     log INFO "Installing dependencies..."
     sleep 1
 
