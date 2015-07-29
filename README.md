@@ -27,6 +27,12 @@ Recently, binaries of CLI tool written in Go language that is uploaded to GitHub
 
 Now finished!
 
+## Installation
+
+To try **cli** on your local environment:
+
+	$ cat ./cli.sh | sh
+
 ## License
 
 [MIT](https://raw.githubusercontent.com/b4b4r07/dotfiles/master/doc/LICENSE-MIT.txt) © BABAROT (a.k.a. b4b4r07)
