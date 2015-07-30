@@ -138,7 +138,7 @@ check_dependencies() {
 
     sleep 1
 
-    if ! has "wget"; then
+    if ! has "wgt"; then
         err=1
         die "wget: not found"
     fi
@@ -215,16 +215,41 @@ main() {
             # extract zipball or tarball
             if extract "$bin" 2>/dev/null; then
                 log INFO "extract ${bin}..."
+
+                # search the repo's binary
                 if [ -f "$REPO" -a -x "$REPO" ]; then
                     bin=""
                 else
-                    # TODO:
                     # if bin is directory
-                    # e.g., awesome-bin.amd64.zip
-                    #       `- awesome-bin.amd64/awesome-bin*
-                    die "$REPO: not found"
-                    exit 1
+                    # e.g., awesome-bin-amd64.zip
+                    #       `- awesome-bin-amd64/awesome-bin*
+                    # peco/peco
+                    # Archive:  peco_darwin_amd64.zip
+                    #   inflating: peco_darwin_amd64/peco
+                    #   inflating: peco_darwin_amd64/README.md
+                    #   inflating: peco_darwin_amd64/Changes
+
+                    if [ -d "${bin%.*}" ]; then
+                        local t
+                        # Do not change current working directory
+                        t="${bin%.*}"/"$REPO"
+                        if [ -f "$t" -a -x "$t" ]; then
+                            bin="$t"
+                        fi
+                    else
+                        local dir
+                        dir="$(ls -1 -F | grep "$REPO" | grep "/$" | head)"
+                        if [ -z "$dir" ]; then
+                            die "$REPO: not found"
+                            exit 1
+                        fi
+
+                        if [ -f "$dir/$REPO" -a -x "$dir/$REPO" ]; then
+                            bin="$dir/$REPO"
+                        fi
+                    fi
                 fi
+                # search end ---
             fi
 
             # Make a copy of REPO and rename to REPO
