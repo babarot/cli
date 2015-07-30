@@ -138,7 +138,7 @@ check_dependencies() {
 
     sleep 1
 
-    if ! has "wgt"; then
+    if ! has "wget"; then
         err=1
         die "wget: not found"
     fi
