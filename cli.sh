@@ -254,8 +254,7 @@ main() {
     # no binary can execute
     if [ $ok -eq 0 ]; then
         die "there is no binary that can execute on this platform"
-        echo "$releases"
-        echo "go to https://github.com/$USER/$REPO and check how to install" 1>&2
+        die "or, the all PATHs require sudoer; please add new path to the PATH"
         exit 1
     fi
 
